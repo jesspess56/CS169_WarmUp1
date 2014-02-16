@@ -3,6 +3,7 @@ from django.shortcuts import render
 from logincounter.models import UsersModels
 from my_warmup.view import login_page
 from django.views.decorators.csrf import csrf_exempt
+
 import json
 
 # Create your views here.
@@ -104,6 +105,9 @@ def call_resetFixture(request):
 def call_unitTests(request):
 	from logincounter.tests import UsersModelsTests
 	import unittest
+	from django.test.utils import setup_test_environment
+
+	setup_test_environment()
 
 	if (request.method =="POST" and request.path=='/TESTAPI/unitTests'):
 		content_type = get_content_type(request)
@@ -114,8 +118,8 @@ def call_unitTests(request):
 				suite = unittest.TestLoader().loadTestsFromTestCase(UsersModelsTests)
 				testing_results = unittest.TextTestRunner(verbosity=2).run(suite)
 				response_data['nrFailed'] = len(testing_results.failures)
-				response_data['output'] = "{}{}".format('\n'.join([result[1] for result in testResult.errors]),'\n'.join([result[1] for result in testResult.failures]))
 				response_Data['totalTests'] = testing_results.testRuns
+				response_data['output'] = "{}{}".format('\n'.join([result[1] for result in test_results.errors]),'\n'.join([result[1] for result in testing_results.failures]))
 			except Exception:
 				response_data['nrFailed'] = 0
 				response_data['output'] = "Error in running UnitTest"

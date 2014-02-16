@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     url(r'^users/add$', user_add),
     url(r'^users/login$', user_login),
     url(r'^TESTAPI/resetFixture$', call_resetFixture)
+    url(r'^TESTAPI/unitTests$', call_unitTests),
 )
 
 
